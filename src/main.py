@@ -1,4 +1,5 @@
 
+import math
 import random 
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
@@ -25,7 +26,7 @@ class Individual:
 
 
 out_of_money = 0 #number of individuals who hit $0
-with_money = [Individual(10) for x in range(20000)]
+with_money = [Individual(10) for x in range(2000)]
 
 
 
@@ -35,10 +36,16 @@ with_money = [Individual(10) for x in range(20000)]
 def trading(i):
     global out_of_money
 
-    for i in range(200): 
+    for i in range(0,len(with_money), 2):
         looser = None
-        trader0 = random.randint(0, len(with_money)-1)
-        trader1 = random.randint(0, len(with_money)-1)
+        if i+1 >= len(with_money):
+            break
+
+        trader0 = i
+        trader1 = i + 1
+
+        #trader0 = random.randint(0, len(with_money)-1)
+        #trader1 = random.randint(0, len(with_money)-1)
 
         # if 1, trader 1 wins $1 else trader 0
         coinflip = random.randint(0,1)
@@ -55,11 +62,9 @@ def trading(i):
             del with_money[looser]
             out_of_money += 1
 
+        random.shuffle(with_money)
+
     count = {}
-    '''
-    for i in range(0, 60):
-        count[i] = 60
-    '''
 
     for i in with_money:
         try:
@@ -81,7 +86,7 @@ def trading(i):
 
 def main() -> int: 
     
-    ani = FuncAnimation(plt.gcf(), trading, interval=100)
+    ani = FuncAnimation(plt.gcf(), trading, interval=500)
     plt.show()
     
 
